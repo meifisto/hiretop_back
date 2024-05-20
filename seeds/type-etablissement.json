@@ -1,0 +1,83 @@
+[
+    {
+      "nom": "Activités des agences de voyage et autres services de réservation",
+      "subject": "formulaireAgenceVoyage",
+      "code": "agence_voyage",
+      "sousTypes": [
+        "Agence de voyage",
+        "Tours Operator",
+        "Agence réceptiive"
+      ]
+    },
+    {
+      "nom": "Hébergement pour les visiteurs",
+      "subject": "formulaireHotel",
+      "code": "hotels",
+      "sousTypes": [
+        "Hôtel",
+        "Motel",
+        "Auberge",
+        "Pension de famille",
+        "Appartement meublés",
+        "Hôtel à appartements",
+        "Autres"
+      ]
+    },
+    {
+      "nom": "Activités liées au services des restauration",
+      "subject": "formulaireRestaurant",
+      "sousTypes": [
+        "Restaurant/Maquis",
+        "Cafétariats",
+        "Fast Food / Pizzariats",
+        "Bars",
+        "Discothèques",
+        "Autres"
+      ],
+      "code": "agence_restau"
+    },
+    {
+      "nom": "Transport de voyageurs",
+      "subject": "formulaireTransport",
+      "sousTypes": [
+        "Par eau ",
+        "Par route",
+        "Par avion"
+      ],
+      "code": "agence_transport"
+    },
+    {
+      "nom": "Location de matériels de transport",
+      "subject": "formulaireLocationVehiculeSansOp",
+      "sousTypes": [],
+      "code": "agence_location"
+    },
+    {
+      "nom": "Activités culturelles",
+      "subject": "formulaireServiceCulturel",
+      "sousTypes": [
+        "Site naturel",
+        "Site réligieux",
+        "Musé",
+        "Monument",
+        "Galeries d'art",
+        "Salle/espace de spectavle",
+        "Autres"
+      ],
+      "code": "activite_culturelle"
+    },
+    {
+      "nom": "Activités sportives et récréatives",
+      "subject": "formulaireServiceSportifRecreatifMensuel",
+      "sousTypes": [
+        "Jeux",
+        "Visite animaux",
+        "Evènements sportifs",
+        "Parc de loisirs",
+        "Jeux de chevaux",
+        "Jeux de pari",
+        "Autres"
+      ],
+      "code": "activite_sportive"
+    }
+  ]

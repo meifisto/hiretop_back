@@ -1,0 +1,56 @@
+[
+    {
+        "nom": "Hôtels et établissements assimilés",
+        "sousSecteurs": [
+            "Hôtel",
+            "Motel",
+            "Auberge",
+            "Pension de famille",
+            "Appartement meublés",
+            "Hôtel à appartements"
+        ],
+        "code": "hotels"
+    },
+    {
+        "nom": "Agence de voyage",
+        "sousSecteurs": [
+            "Agence de voyage",
+            "Tour Operator",
+            "Agence Réceptive"
+        ],
+        "code": "agence_voyage"
+    },
+    {
+        "nom": "Transport de voyageurs",
+        "sousSecteurs": [
+            "Par route",
+            "Par eau",
+            "Par avion"
+        ],
+        "code": "transport_voyageurs"
+    },
+    {
+        "nom": "Restauration et consommation de boissons",
+        "sousSecteurs": [
+            "Restaurant/Maquis",
+            "Cafétarias",
+            "Fast Food/Pizzariat",
+            "Bars",
+            "Discothèques"
+        ],
+        "code": "restauration"
+    },
+    {
+        "nom": "Transport aériens et postes frontaliers"
+    },
+    {
+        "nom": "Activités culturelles"
+    },
+    {
+        "sousSecteurs": [
+            "Avec opérateur",
+            "Sans opérateur"
+        ],
+        "nom": "Location"
+    }
+]

@@ -1,0 +1,23 @@
+- L'ACL doit etre mis en place a deux niveau
+  - Sur les routes (si un role peut accéder a une route de l'api ou non)
+  - Sur les requetes vers la base de donnees
+    - Exemple 1: une structure ne peut pas 'read/find' des offres remplies par les autres structures
+    mais uniquement les siennes
+
+- Les permissions sont definies ici: ./acl/casl/abilities.js
+
+- Le controle sur les routes est fait a chaque requete entrantes (Dans le fichier ./lib/context.js)
+  - Si la routes n'est pas proteger par auth, aucun controle n'est fait
+  - Si elle est proteger par auth:
+    - Si elle n'a pas de permissions defini, on laisse passer la requete
+    - Si il y des permissions sur la route
+      1- On recupere ses permissions.
+      2- On recupere les authCredentials de la requete: ils contiennent le role de l'utilisateur qui fait la requete
+      3- On recupere a l'aide d'un helpers les permissions (abilities) liees au role du user qui fait la requete
+      4- Si ce role a les permissions defini sur cette route, il passe. Sinon on leve une exception.
+
+
+
+- Le controle sur les requetes vers la base de donnees
+  - N'est pas encore fait, le code existant ne permet pas une migration aisee
+  - Rechercher un moyen d'appliquer cela sur le code existant sans changer beaucoup de fichier

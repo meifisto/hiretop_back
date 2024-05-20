@@ -1,0 +1,120 @@
+name: Build and Deploy
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: "Log level"
+        required: true
+        default: "warning"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    container: node:14
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # - uses: actions/checkout@v2
+      # - name: Build and Publish mtca-api to Github Packages Registry
+      #   uses: elgohr/Publish-Docker-Github-Action@master
+      #   env:
+      #     APP_PORT: 4445
+      #   with:
+      #     # node-version: 16
+      #     name: ${{ github.repository }}/mtca_backend
+      #     registry: ghcr.io
+      #     username: ${{ secrets.USERNAME }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+      #     dockerfile: Dockerfile
+      #     buildargs: APP_PORT
+      #     tags: dev-casl
+
+      - name: Deploy package to vps
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APP_DIR: /srv/mtca_backend
+          FRONTEND_APP_DIR: /srv/mtca_frontend
+          ENV_VAR_DIR: /srv/envs
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          MTCA_STACK_DIR: /srv/mtca_monolith_arch
+
+        with:
+          command_timeout: 20m
+          host: ${{ secrets.DEPLOY_HOST }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          username: ${{ secrets.DEPLOY_USER }}
+          # key: ${{ secrets.DEPLOY_KEY }}
+          password: ${{ secrets.DEPLOY_KEY }}
+          envs: GITHUB_USERNAME, GITHUB_TOKEN, APP_DIR, ENV_VAR_DIR, GITHUB_REPOSITORY, MTCA_STACK_DIR
+          script: |
+            # #install docker
+            # sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+            # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+            # sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+            # apt-cache policy docker-ce
+            # sudo apt install docker-ce -y
+
+            # install docker-compose
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} chmod +x /usr/local/bin/docker-compose
+
+            # if [ -d $APP_DIR/ ] ; then
+              # echo "Repo directory already exist. Pulling remote"
+              # sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $APP_DIR/ checkout production
+              # sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $APP_DIR/ pull
+              # echo "Pull complete"
+            # else 
+              # echo "Directory does not exists; Clone repo" 
+              # sudo -S <<< ${{ secrets.DEPLOY_KEY }} clone -b production git@github.com:$GITHUB_REPOSITORY.git $APP_DIR
+              # echo "Cloning complete"
+            # fi
+
+            # Update source code for prod
+            echo "Pulling remote"
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $APP_DIR/ checkout production
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $APP_DIR/ pull
+            echo "Pull complete"
+
+            # Update source code for (monolith arch)
+            echo "Pulling remote for monolith arch"
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $MTCA_STACK_DIR/ fetch --all
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $MTCA_STACK_DIR/ checkout monolith-setup
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }}  git -C $MTCA_STACK_DIR/ pull
+            echo "Pull complete"
+
+            # Update envs vars for dev
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} cp $ENV_VAR_DIR/".env.api" $MTCA_STACK_DIR/
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} cp $ENV_VAR_DIR/".env.mongo" $MTCA_STACK_DIR/
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} cp $ENV_VAR_DIR/".env.dcp-bj" $MTCA_STACK_DIR/
+
+            # Update envs vars for prod
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} cp $ENV_VAR_DIR/".env.api" $APP_DIR/.env
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} cp $ENV_VAR_DIR/".env.mongo" $APP_DIR/
+
+            # update images
+            docker build $APP_DIR -t back_mtca
+            # These 2 lines uses images from github container registry. Offline for now
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker login ghcr.io -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker-compose -f $APP_DIR/docker-compose.yml pull
+
+            #start mono arch
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker-compose -f $MTCA_STACK_DIR/docker-compose.monolith.yml down
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker-compose -f $MTCA_STACK_DIR/docker-compose.monolith.yml up -d
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker-compose -f $MTCA_STACK_DIR/docker-compose.monolith.yml restart backmtca
+            sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker image prune -f
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+
+            # start prod server
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker-compose -f $APP_DIR/docker-compose.yml up -d backendmtca_server
+            # sudo -S <<< ${{ secrets.DEPLOY_KEY }} docker system prune -f

@@ -1,0 +1,270 @@
+[
+    {
+        "nom": "Administrateur",
+        "code": "super_admin",
+        "permissions": [
+            {
+                "subject": "etablissement",
+                "action": "read"
+            },
+            {
+                "subject": "agentMtca",
+                "action": "read"
+            },
+            {
+                "subject": "agentEtablissement",
+                "action": "read"
+            },
+            {
+                "subject": "agentMtca",
+                "action": "create"
+            },
+            {
+                "subject": "agentMtca",
+                "action": "delete"
+            },
+            {
+                "subject": "etablissementDetails",
+                "action": "read"
+            },
+            {
+                "subject": "commissaire",
+                "action": "read"
+            },
+            {
+                "subject": "commissaire",
+                "action": "update"
+            },
+            {
+                "subject": "commissaire",
+                "action": "delete"
+            },
+            {
+                "subject": "commissaire",
+                "action": "list"
+            },
+            {
+                "subject": "commissaire",
+                "action": "create"
+            }
+        ]
+    },
+    {
+        "nom": "Agent Etablissement",
+        "code": "agent_etablissement",
+        "permissions": []
+    },
+    {
+        "nom": "Promoteur Etablissement",
+        "code": "promo_etablissement",
+        "permissions": [
+            {
+                "subject": "agentEtablissement",
+                "action": "create"
+            },
+            {
+                "subject": "agentEtablissement",
+                "action": "read"
+            },
+            {
+                "subject": "agentEtablissement",
+                "action": "update"
+            },
+            {
+                "subject": "agentEtablissement",
+                "action": "delete"
+            },
+            {
+                "subject": "etablissementDetails",
+                "action": "read"
+            }
+        ]
+    },
+    {
+        "nom": "Grand Public",
+        "code": "grand_public",
+        "permissions": [
+            {
+                "subject": "formulaireAgenceVoyage",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireAgenceVoyage",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireTransport",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireTransport",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireHotel",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireHotel",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireRestaurant",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireRestaurant",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireLocationVehiculeSansOp",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireLocationVehiculeSansOp",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireServiceSportifRecreatif",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireServiceSportifRecreatif",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireFrontiereEntree",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireFrontiereEntree",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireFrontiereSortie",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireFrontiereSortie",
+                "action": "read"
+            }
+        ]
+    },
+    {
+        "nom": "Agent Gouvernement (Agents Consultation Ministère)",
+        "code": "agent_gouvernement",
+        "permissions": [
+            {
+                "subject": "etablissementDetails",
+                "action": "read"
+            }
+        ]
+    },
+    {
+        "nom": "Agent MTCA",
+        "code": "agent_mtca",
+        "permissions": [
+            {
+                "subject": "etablissement",
+                "action": "read"
+            },
+            {
+                "subject": "statistiques",
+                "action": "read"
+            },
+            {
+                "subject": "etablissementDetails",
+                "action": "read"
+            },
+            {
+                "subject": "etablissement",
+                "action": "validate"
+            },
+            {
+                "subject": "etablissement",
+                "action": "reject"
+            },
+            {
+                "subject": "etablissement",
+                "action": "update"
+            }
+        ]
+    },
+    {
+        "nom": "Commissaire",
+        "code": "commissaire",
+        "permissions": [
+            {
+                "subject": "commissaire",
+                "action": "read"
+            },
+            {
+                "subject": "agentPolice",
+                "action": "create"
+            },
+            {
+                "subject": "agentPolice",
+                "action": "read"
+            },
+            {
+                "subject": "agentPolice",
+                "action": "update"
+            },
+            {
+                "subject": "agentPolice",
+                "action": "delete"
+            },
+            {
+                "subject": "agentPolice",
+                "action": "action"
+            },
+            {
+                "subject": "agentPolice",
+                "action": "list"
+            },
+            {
+                "subject": "formulaireFrontiereEntree",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireFrontiereEntree",
+                "action": "list"
+            },
+            {
+                "subject": "formulaireFrontiereSortie",
+                "action": "read"
+            },
+            {
+                "subject": "formulaireFrontiereSortie",
+                "action": "list"
+            }
+        ]
+    },
+    {
+        "nom": "Agent INSTAD",
+        "code": "agent_instad",
+        "permissions": []
+    },
+    {
+        "nom": "Agent Police",
+        "code": "agent_police",
+        "permissions": [
+            {
+                "subject": "formulaireFrontiereEntree",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireFrontiereSortie",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireAeroportEntree",
+                "action": "create"
+            },
+            {
+                "subject": "formulaireAeroportSortie",
+                "action": "create"
+            }
+        ]
+    }
+]
